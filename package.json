@@ -10,6 +10,7 @@
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
+    "@cloudflare/puppeteer": "^0.0.14",
     "@cloudflare/vitest-pool-workers": "^0.5.2",
     "@cloudflare/workers-types": "^4.20240925.0",
     "typescript": "^5.5.2",
