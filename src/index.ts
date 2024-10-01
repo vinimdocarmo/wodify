@@ -20,12 +20,12 @@ export default {
 		const year = today.getFullYear();
 		const month = today.getMonth() + 1;
 		const day = today.getDate();
-		const time = "1800-1900";
+		const time = '1800-1900';
 
 		const bookedKey = `booked:${year}-${month}-${day}-${time}`;
 
 		// check if today's WOD is already booked
-		if (await env.WOD.get(bookedKey) === "1") {
+		if ((await env.WOD.get(bookedKey)) === '1') {
 			return Response.json({ alreadyBooked: true });
 		}
 
@@ -68,16 +68,6 @@ export default {
 			return Response.json({ ok: 'class not found' });
 		}
 
-		const parentSelector = '.koptekst-icoon-reset';
-		await page.waitForSelector(parentSelector);
-
-		const alertSuccess = await page.$('.alert.success');
-
-		if (alertSuccess) {
-			await browser.close();
-			return Response.json({ ok: 'class already booked!' });
-		}
-
 		const spansInParent = await page.$$('.event-info-blok__content span');
 		let signUpSpan = null;
 
@@ -95,7 +85,7 @@ export default {
 			await browser.close();
 
 			// mark today's WOD as booked
-			await env.WOD.put(bookedKey, "1");
+			await env.WOD.put(bookedKey, '1');
 
 			return Response.json({ ok: 'class booked!' });
 		} else {
