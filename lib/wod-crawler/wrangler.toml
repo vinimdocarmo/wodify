@@ -1,5 +1,5 @@
-name = "browser-worker"
-main = "src/index.ts"
+name = "wod-crawler"
+main = "./index.ts"
 compatibility_date = "2024-09-25"
 compatibility_flags = [ "nodejs_compat" ]
 
@@ -13,3 +13,7 @@ enabled = true
 
 [vars]
 EMAIL = "vinimdocarmo@gmail.com"
+
+[triggers]
+# - Every weekday at 8AM
+crons = [ "0 8 * * 2-6" ]

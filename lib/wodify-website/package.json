@@ -1,0 +1,11 @@
+{
+  "name": "wodify-website",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.3"
+  }
+}
