@@ -85,7 +85,7 @@ export default {
 				targetTime = '10:30 - 11:30';
 				break;
 			default:
-				return Response.json('Invalid time', { status: 400 });
+				return new Response('Invalid time', { status: 400 });
 		}
 
 		for (const span of spans) {
