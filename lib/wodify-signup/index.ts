@@ -31,9 +31,9 @@ export default {
 			return new Response('Missing time (e.g. 18:00-19:00', { status: 400 });
 		}
 
-		const bookedKey = `booked:${year}-${month}-${day}-${time.replaceAll(':', '')}`;
+		console.log(`Booking for ${year}-${month}-${day} at ${time}; experiment: ${isExperiment}`);
 
-		console.log('Checking this booking ', bookedKey);
+		const bookedKey = `booked:${year}-${month}-${day}-${time.replaceAll(':', '')}`;
 
 		// check if today's WOD is already booked
 		if ((await env.WOD.get(bookedKey)) === '1') {
