@@ -37,6 +37,7 @@ export default {
 
 		// check if today's WOD is already booked
 		if ((await env.WOD.get(bookedKey)) === '1') {
+			console.log('Already booked ', bookedKey);
 			return Response.json({ alreadyBooked: true });
 		}
 
@@ -115,12 +116,12 @@ export default {
 		if (signUpSpan) {
 			if (!isExperiment) {
 				await signUpSpan.click();
+				// mark today's WOD as booked
+				await env.WOD.put(bookedKey, '1');
 			}
+
 			await page.waitForSelector('.alert.success');
 			await browser.close();
-
-			// mark today's WOD as booked
-			await env.WOD.put(bookedKey, '1');
 
 			return Response.json({ ok: 'class booked!' });
 		} else {
