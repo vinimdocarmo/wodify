@@ -25,10 +25,13 @@ export default {
 		}
 
 		const isExperiment = qs.get('experiment') === 'true';
+		const time = qs.get('time');
 
-		const time = '1800-1900';
+		if (!time) {
+			return new Response('Missing time (e.g. 18:00-19:00', { status: 400 });
+		}
 
-		const bookedKey = `booked:${year}-${month}-${day}-${time}`;
+		const bookedKey = `booked:${year}-${month}-${day}-${time.replaceAll(':', '')}`;
 
 		console.log('Checking this booking ', bookedKey);
 
@@ -62,9 +65,31 @@ export default {
 		const spans = await page.$$(calendarContentSelector + ' span');
 		let targetSpan = null;
 
+		let targetTime;
+
+		switch (time) {
+			case "18:00-19:00":
+				targetTime = '18:00 - 19:00';
+				break;
+			case "19:00-20:00":
+				targetTime = '19:00 - 20:00';
+				break;
+			case "17:00-18:00":
+				targetTime = '17:00 - 18:00';
+				break;
+			case "09:30-10:30":
+				targetTime = '09:30 - 10:30';
+				break;
+			case "10:30-11:30":
+				targetTime = '10:30 - 11:30';
+				break;
+			default:
+				return Response.json('Invalid time', { status: 400 });
+		}
+
 		for (const span of spans) {
 			const text = await page.evaluate((el) => el.textContent, span);
-			if (text.trim() === '18:00 - 19:00') {
+			if (text.trim() === targetTime) {
 				targetSpan = span;
 				break;
 			}
