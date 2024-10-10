@@ -1,4 +1,4 @@
-name = "browser-worker"
+name = "wod-signup"
 main = "index.ts"
 compatibility_date = "2024-09-25"
 compatibility_flags = [ "nodejs_compat" ]

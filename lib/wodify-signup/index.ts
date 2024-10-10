@@ -15,14 +15,22 @@ export default {
 			return new Response('Unauthorized', { status: 401 });
 		}
 
-		// get year, month and day from today's date
-		const today = new Date();
-		const year = today.getFullYear();
-		const month = today.getMonth() + 1;
-		const day = today.getDate();
+		const qs = new URL(request.url).searchParams;
+		const year = qs.get('year');
+		const month = qs.get('month');
+		const day = qs.get('day');
+
+		if (!year || !month || !day) {
+			return new Response('Missing year, month or day', { status: 400 });
+		}
+
+		const isExperiment = qs.get('experiment') === 'true';
+
 		const time = '1800-1900';
 
 		const bookedKey = `booked:${year}-${month}-${day}-${time}`;
+
+		console.log('Checking this booking ', bookedKey);
 
 		// check if today's WOD is already booked
 		if ((await env.WOD.get(bookedKey)) === '1') {
@@ -80,7 +88,9 @@ export default {
 		}
 
 		if (signUpSpan) {
-			await signUpSpan.click();
+			if (!isExperiment) {
+				await signUpSpan.click();
+			}
 			await page.waitForSelector('.alert.success');
 			await browser.close();
 
