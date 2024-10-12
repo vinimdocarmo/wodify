@@ -3,18 +3,39 @@ import puppeteer, { BrowserWorker } from '@cloudflare/puppeteer';
 interface Env {
 	MYBROWSER: BrowserWorker;
 	WOD: KVNamespace;
-	EMAIL: string;
-	PASS: string;
-	TOKEN: string;
+	EMAIL_VINI: string;
+	EMAIL_INI: string;
+	PASS_VINI: string;
+	PASS_INI: string;
+	TOKEN_VINI: string;
+	TOKEN_INI: string;
 }
 
 export default {
 	async fetch(request, env): Promise<Response> {
 		let browser: puppeteer.Browser | null = null;
+		const creds = {
+			vini: {
+				email: env.EMAIL_VINI,
+				pass: env.PASS_VINI,
+				token: env.TOKEN_VINI,
+			},
+			ini: {
+				email: env.EMAIL_INI,
+				pass: env.PASS_INI,
+				token: env.TOKEN_INI,
+			},
+		};
 
 		try {
 			const auth = request.headers.get('Authorization')?.split('Bearer ')[1];
-			if (auth !== env.TOKEN) {
+			let user: 'vini' | 'ini';
+
+			if (auth === creds.vini.token) {
+				user = 'vini';
+			} else if (auth === creds.ini.token) {
+				user = 'ini';
+			} else {
 				return new Response('Unauthorized', { status: 401 });
 			}
 
@@ -36,7 +57,7 @@ export default {
 
 			console.log(`Booking for ${year}-${month}-${day} at ${time}; experiment: ${isExperiment}`);
 
-			const bookedKey = `booked:${year}-${month}-${day}-${time.replaceAll(':', '')}`;
+			const bookedKey = `booked:${user}:${year}-${month}-${day}-${time.replaceAll(':', '')}`;
 
 			// check if today's WOD is already booked
 			if ((await env.WOD.get(bookedKey)) === '1') {
@@ -60,8 +81,18 @@ export default {
 			const signInBtn = 'button[type="submit"]';
 			await page.waitForSelector(signInBtn);
 
-			await page.type(usernameInput, env.EMAIL);
-			await page.type(passwordInput, env.PASS);
+			let email, pass: string;
+
+			if (user === 'vini') {
+				email = creds.vini.email;
+				pass = creds.vini.pass;
+			} else if (user === 'ini') {
+				email = creds.ini.email;
+				pass = creds.ini.pass;
+			}
+
+			await page.type(usernameInput, email!);
+			await page.type(passwordInput, pass!);
 
 			await page.click(signInBtn);
 
