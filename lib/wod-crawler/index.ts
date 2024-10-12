@@ -19,11 +19,7 @@ export default {
 
 		return Response.json({ ok: true, wod: wodContent });
 	},
-	async scheduled(
-		controller: ScheduledController,
-		env: Env,
-		ctx: ExecutionContext
-	): Promise<void> {
+	async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
 		await crawlWodContent(env);
 	},
 } satisfies ExportedHandler<Env>;
@@ -86,7 +82,7 @@ async function crawlWodContent(env: Env): Promise<string> {
 	await page.waitForSelector(wodContentSelector);
 
 	const wodContentEl = await page.$(wodContentSelector);
-	let wodContent = await page.evaluate((el) => el.innerHTML, wodContentEl) ?? "";
+	let wodContent = (await page.evaluate((el) => el.innerHTML, wodContentEl)) ?? '';
 
 	wodContent = wodContent.replace(/<br>/g, '\n');
 
