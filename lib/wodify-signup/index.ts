@@ -10,7 +10,7 @@ interface Env {
 
 export default {
 	async fetch(request, env): Promise<Response> {
-	let browser: puppeteer.Browser | null = null;
+		let browser: puppeteer.Browser | null = null;
 
 		try {
 			const auth = request.headers.get("Authorization")?.split("Bearer ")[1];
@@ -65,10 +65,10 @@ export default {
 
 			await page.click(signInBtn);
 
-			const calendarContentSelector = ".calendar-dv__content";
-			await page.waitForSelector(calendarContentSelector);
+			const eventInfoSelector = ".event-info-blok__content";
+			await page.waitForSelector(eventInfoSelector);
 
-			const spans = await page.$$(calendarContentSelector + " span");
+			const spans = await page.$$(eventInfoSelector + " span");
 			let targetSpan = null;
 
 			let targetTime;
@@ -112,7 +112,7 @@ export default {
 
 			for (const span of spansInParent) {
 				const text = await page.evaluate((el) => el.textContent, span);
-				if (text.trim() === "Sign up") {
+				if (text.trim() === "Aanmelden") {
 					signUpSpan = span;
 					break;
 				}
@@ -129,7 +129,7 @@ export default {
 
 				return Response.json({ ok: "class booked!" });
 			} else {
-        return new Response("Sign up button not found", { status: 500 });
+				return new Response("Sign up button not found", { status: 500 });
 			}
 		} catch (e) {
 			const m = e ? (e as any).message : "Unknown error";
@@ -137,9 +137,9 @@ export default {
 
 			return new Response("Internal server error", { status: 500 });
 		} finally {
-      if (browser) {
-        await browser.close();
-      }
-    }
+			if (browser) {
+				await browser.close();
+			}
+		}
 	},
 } satisfies ExportedHandler<Env>;
