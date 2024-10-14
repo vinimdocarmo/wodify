@@ -71,7 +71,7 @@ export default {
 			const page = await browser.newPage();
 			await page.goto('https://creativesportscompany.sportbitapp.nl/web/en/login');
 
-			await page.waitForSelector('.login__button');
+			await page.waitForSelector('.login__button', { timeout: 5000 });
 			await page.click('.login__button');
 
 			const usernameInput = '[formcontrolname="username"]';
@@ -96,8 +96,8 @@ export default {
 
 			await page.click(signInBtn);
 
-			const eventInfoSelector = '.event-info-blok__content';
-			await page.waitForSelector(eventInfoSelector);
+			const eventInfoSelector = '.calendar-dv__card-wrapper';
+			await page.waitForSelector(eventInfoSelector, { timeout: 5000 });
 
 			const spans = await page.$$(eventInfoSelector + ' span');
 			let targetSpan = null;
@@ -138,12 +138,18 @@ export default {
 				return Response.json({ ok: 'class not found' });
 			}
 
-			const spansInParent = await page.$$('.event-info-blok__content span');
+			const blockInfoSelector = '.event-info-blok__content';
+			await page.waitForSelector(blockInfoSelector, { timeout: 5000 });
+
+			const spansInParent = await page.$$(`${blockInfoSelector} span`);
 			let signUpSpan = null;
+
+			const spanTexts: string[] = [];
 
 			for (const span of spansInParent) {
 				const text = await page.evaluate((el) => el.textContent, span);
-				if (text.trim() === 'Aanmelden') {
+				spanTexts.push(text.trim());
+				if (text.trim().toLowerCase() === 'sign up') {
 					signUpSpan = span;
 					break;
 				}
@@ -152,11 +158,10 @@ export default {
 			if (signUpSpan) {
 				if (!isExperiment) {
 					await signUpSpan.click();
+					await page.waitForSelector('.alert.success', { timeout: 5000 });
 					// mark today's WOD as booked
 					await env.WOD.put(bookedKey, '1');
 				}
-
-				await page.waitForSelector('.alert.success');
 
 				return Response.json({ ok: 'class booked!' });
 			} else {
