@@ -10,6 +10,3 @@ kv_namespaces = [
 
 [observability]
 enabled = true
-
-[vars]
-EMAIL = "vinimdocarmo@gmail.com"
