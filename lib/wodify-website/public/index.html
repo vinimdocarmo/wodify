@@ -23,17 +23,6 @@
                 <h2>What's the workout of the day?</h2>
  
                 <div class="chat-container">
-                    Focus: Strength<br/><br/>
-                    NEVER SKIP LEG/STRENGTH DAY<br/><br/>
-                    3 Sets: 1 set every 4 min AHAP<br/><br/>
-                    7-5-3 Backsquats<br/><br/>
-                    *After each set 3 Assisted Pullups Rx+ 3 to 5 Strict (negative) Pullups Comp 7 Strict Pullups<br/><br/>
-                    3 Sets: 1 set every 4 min<br/><br/>
-                    5-3-2 Backsquats<br/><br/>
-                    *After each set 3 Assisted Pullups Rx+ 3 to 5 Strict (negative) Pullups Comp 7 Strict Pullups<br/><br/>
-                    3 Sets: 1 set every 4 min<br/><br/>
-                    2-2-2 Backsquats<br/><br/>
-                    *After each set 3 Assisted Pullups Rx+ 3 to 5 Strict (negative) Pullups Comp 7 Strict Pullups
                 </div>
             </div>
         </div>
@@ -42,5 +31,13 @@
             <p><a href="https://github.com/vinimdocarmo/wodify" id="github-link">check out the code</a></p>
         </footer>
     </main>
+
+    <script>
+        window.onload = async () => {
+            const response = await fetch('/wod');
+            const wod = await response.text();
+            document.querySelector('.chat-container').innerHTML = wod;
+        }
+    </script>
 </body>
 </html>
