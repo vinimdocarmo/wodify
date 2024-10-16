@@ -1,11 +1,8 @@
-name = "wodify-website"
+name = "wodify"
+pages_build_output_dir = "./public"
 compatibility_date = "2024-09-28"
 compatibility_flags = ["nodejs_compat"]
 
 kv_namespaces = [
   { binding = "WOD", id = "780614b47dd0437599ff65934dadf012" }
 ]
-
-[assets]
-directory = "./public"
-

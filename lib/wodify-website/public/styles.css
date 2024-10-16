@@ -10,7 +10,6 @@ body {
 }
 
 .center-container {
-    height: 100vh;
     max-width: 800px;
     padding: 20px;
     text-align: center;
