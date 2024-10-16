@@ -84,7 +84,7 @@ async function crawlWodContent(env: Env): Promise<string> {
 	const wodContentEl = await page.$(wodContentSelector);
 	let wodContent = (await page.evaluate((el) => el.innerHTML, wodContentEl)) ?? '';
 
-	wodContent = wodContent.replace(/<br>/g, '<br/><br/>');
+	wodContent = wodContent.replace(/<br>/g, '\n');
 
 	if (wodContent) {
 		await env.WOD.put(wodKey, wodContent, { expirationTtl: 60 * 60 * 24 /** expire after 24h */  });
