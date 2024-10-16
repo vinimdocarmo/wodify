@@ -160,7 +160,7 @@ export default {
 					await signUpSpan.click();
 					await page.waitForSelector('.alert.success', { timeout: 5000 });
 					// mark today's WOD as booked
-					await env.WOD.put(bookedKey, '1');
+					await env.WOD.put(bookedKey, '1', { expirationTtl: 60 * 60 * 24 /** expire after 24 hours */ });
 				}
 
 				return Response.json({ ok: 'class booked!' });
