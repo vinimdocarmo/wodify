@@ -36,7 +36,10 @@
     <script>
         window.onload = async () => {
             const response = await fetch('/wod');
-            const wod = await response.text();
+            let wod = await response.text();
+            wod = wod.replaceAll(/Rx(?!\+)/gi, "<strong style=\"color: green;\">Rx</strong>")
+            wod = wod.replaceAll(/Rx(?:\+)/gi, "<strong style=\"color: orange;\">Rx+</strong>")
+            wod = wod.replaceAll(/Comp\b/gi, "<strong style=\"color: red;\">Comp</strong>");
             document.querySelector('.chat-container').innerHTML = wod;
         }
     </script>
