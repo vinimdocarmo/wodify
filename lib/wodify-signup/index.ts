@@ -55,7 +55,7 @@ export default {
 				return new Response('Missing time (e.g. 18:00-19:00', { status: 400 });
 			}
 
-			console.log(`Booking for ${year}-${month}-${day} at ${time}; experiment: ${isExperiment}`);
+			console.log(`Booking for ${year}-${month}-${day} at ${time}; experiment: ${isExperiment}; user: ${user}`);
 
 			const bookedKey = `booked:${user}:${year}-${month}-${day}-${time.replaceAll(':', '')}`;
 
