@@ -115,7 +115,7 @@ export default {
 					targetTime = '17:00 - 18:00';
 					break;
 				case '09:30-10:30':
-					targetTime = '09:30 - 10:30';
+					targetTime = '9:30 - 10:30';
 					break;
 				case '10:30-11:30':
 					targetTime = '10:30 - 11:30';
